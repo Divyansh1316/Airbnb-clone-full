@@ -2,64 +2,67 @@ import { NextResponse } from "next/server";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import prisma from "@/app/libs/prismadb";
 
-interface IParams {
-  listingId?: string;
-}
+// 👇 context type for this dynamic route
+type RouteContext = {
+  params: Promise<{ listingId: string }>;
+};
 
-export async function POST(request: Request, { params }: { params: IParams }) {
+export async function POST(request: Request, { params }: RouteContext) {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
     return NextResponse.error();
   }
 
-  const { listingId } = params;
+  // 👇 await params before using listingId
+  const { listingId } = await params;
 
-  if (!listingId || typeof listingId != "string") {
+  if (!listingId || typeof listingId !== "string") {
     throw new Error("Invalid ID");
   }
 
-  let favoritesIDs = [...(currentUser.favoriteIds || [])];
+  let favoriteIds = [...(currentUser.favoriteIds || [])];
 
-  favoritesIDs.push(listingId);
+  if (!favoriteIds.includes(listingId)) {
+    favoriteIds.push(listingId);
+  }
 
   const user = await prisma.user.update({
     where: {
       id: currentUser.id,
     },
     data: {
-      favoriteIds: favoritesIDs,
+      favoriteIds,
     },
   });
 
   return NextResponse.json(user);
 }
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: IParams }
-) {
+export async function DELETE(request: Request, { params }: RouteContext) {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
     return NextResponse.error();
   }
 
-  const { listingId } = params;
+  const { listingId } = await params;
 
-  if (!listingId || typeof listingId != "string") {
+  if (!listingId || typeof listingId !== "string") {
     throw new Error("Invalid ID");
   }
 
   let favoriteIds = [...(currentUser.favoriteIds || [])];
 
-  favoriteIds = favoriteIds.filter((id) => id != listingId);
+  favoriteIds = favoriteIds.filter((id) => id !== listingId);
 
   const user = await prisma.user.update({
     where: {
       id: currentUser.id,
     },
-    data: { favoriteIds },
+    data: {
+      favoriteIds,
+    },
   });
 
   return NextResponse.json(user);
