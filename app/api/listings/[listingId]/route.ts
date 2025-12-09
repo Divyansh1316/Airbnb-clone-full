@@ -3,23 +3,22 @@ import { NextResponse } from "next/server";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import prisma from "@/app/libs/prismadb";
 
-interface IParams {
-  listingId?: string;
-}
+// Proper context type for this dynamic route
+type RouteContext = {
+  params: Promise<{ listingId: string }>;
+};
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: IParams }
-) {
+export async function DELETE(request: Request, { params }: RouteContext) {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
     return NextResponse.error();
   }
 
-  const { listingId } = params;
+  // Await params before using listingId
+  const { listingId } = await params;
 
-  if (!listingId || typeof listingId != "string") {
+  if (!listingId) {
     throw new Error("Invalid Id");
   }
 
