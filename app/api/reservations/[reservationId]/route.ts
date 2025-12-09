@@ -8,7 +8,7 @@ interface IParams {
 
 export async function DELETE(
   request: Request,
-  { params }: { params: IParams }
+  { params }: { params: Promise<IParams> } // params is async now
 ) {
   const currentUser = await getCurrentUser();
 
@@ -16,9 +16,10 @@ export async function DELETE(
     return NextResponse.error();
   }
 
-  const { reservationId } = params;
+  //  await params before accessing reservationId
+  const { reservationId } = await params;
 
-  if (!reservationId || typeof reservationId != "string") {
+  if (!reservationId || typeof reservationId !== "string") {
     throw new Error("Invalid Id");
   }
 

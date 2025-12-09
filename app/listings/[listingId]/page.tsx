@@ -9,16 +9,26 @@ interface IParams {
   listingId?: string;
 }
 
-const ListingPage = async ({ params }: { params: IParams }) => {
-  const listing = await getListingById(params);
-  const reservations = await getReservations(params);
+//  params is async in Next 15
+interface ListingPageProps {
+  params: Promise<IParams>;
+}
+
+const ListingPage = async ({ params }: ListingPageProps) => {
+  //  Await params once
+  const resolvedParams = await params;
+
+  const listing = await getListingById(resolvedParams);
+  const reservations = await getReservations(resolvedParams);
   const currentUser = await getCurrentUser();
 
   if (!listing) {
-    return;
-    <ClientOnly>
-      <EmptyState />;
-    </ClientOnly>;
+    //  actually return the JSX
+    return (
+      <ClientOnly>
+        <EmptyState />
+      </ClientOnly>
+    );
   }
 
   return (
@@ -31,4 +41,5 @@ const ListingPage = async ({ params }: { params: IParams }) => {
     </ClientOnly>
   );
 };
+
 export default ListingPage;
