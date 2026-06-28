@@ -1,36 +1,166 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🏡 Airbnb Clone - Full Stack Property Booking Platform
 
-## Getting Started
+A modern full-stack property listing and reservation platform inspired by Airbnb. Users can browse listings, filter properties, create reservations, and manage favorite listings with secure authentication.
 
-First, run the development server:
+---
+
+## 🚀 Live Demo
+
+**Live Website:** https://video-rent-example-tawny.vercel.app/
+
+---
+
+## ✨ Features
+
+### 👤 User Features
+
+- Secure authentication using:
+  - Google OAuth
+  - GitHub OAuth
+  - Email & Password Login
+
+- Browse available property listings
+- Advanced filtering by:
+  - Category
+  - Location
+  - Guests
+  - Rooms
+  - Bathrooms
+
+- Search properties based on travel preferences
+- Add listings to favorites
+- View detailed property information
+- Make reservations for listed properties
+- Cancel reservations
+- Responsive UI optimized for all devices
+
+---
+
+### 🏠 Host Features
+
+- Create new property listings
+- Upload property images
+- Add listing details:
+  - Title
+  - Description
+  - Location
+  - Guest capacity
+  - Room count
+  - Bathroom count
+  - Price
+
+- Manage listed properties
+- View reservations for listed properties
+
+---
+
+## 🏗️ Tech Stack
+
+### Frontend
+
+- Next.js 15
+- React.js
+- TypeScript
+- Tailwind CSS
+
+### Backend
+
+- Next.js API Routes
+- Prisma ORM
+- MongoDB
+
+### Authentication
+
+- NextAuth.js
+- Google OAuth
+- GitHub OAuth
+- Credentials Authentication
+
+### Additional Tools
+
+- React Hook Form
+- Zustand
+- Axios
+- React Hot Toast
+- Leaflet Maps
+
+---
+
+## 📂 Project Structure
+
+```text
+Airbnb-clone-full/
+│
+├── app/                # Next.js App Router pages
+├── prisma/             # Prisma schema and database config
+├── public/             # Static assets
+├── app/components/     # Reusable UI components
+├── app/actions/        # Server actions / data fetching
+└── README.md
+```
+
+---
+
+## ⚙️ Installation
+
+### Clone the repository
+
+```bash
+git clone https://github.com/your-username/airbnb-clone-full.git
+cd airbnb-clone-full
+```
+
+---
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+## ▶️ Run the Project
+
+Start development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Application runs on:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+---
 
-## Learn More
+## 🔮 Future Improvements
 
-To learn more about Next.js, take a look at the following resources:
+- Payment integration
+- Property reviews and ratings
+- Chat between hosts and guests
+- Wishlist enhancements
+- Availability calendar
+- Booking notifications
+- Admin dashboard
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 📚 What I Learned
 
-## Deploy on Vercel
+- Building scalable full-stack applications using Next.js
+- Managing authentication with NextAuth.js
+- Implementing OAuth providers (Google & GitHub)
+- Database modeling using Prisma + MongoDB
+- Building responsive UIs with Tailwind CSS
+- Managing global state efficiently
+- Handling secure environment variables and deployment workflows
+- Deploying production-ready applications with Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 👨‍💻 Author
+
+**Divyansh Dhaundiyal**
+
+GitHub: https://github.com/Divyansh1316
