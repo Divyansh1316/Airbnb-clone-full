@@ -16,6 +16,9 @@ import ListingReservation from "@/app/components/listings/ListingReservation";
 import { Range } from "react-date-range";
 
 import useLoginModal from "@/app/hooks/useLoginModal";
+import RecommendedListings from "@/app/components/listings/RecommendedListings";
+import ListingReviews from "@/app/components/listings/ListingReviews";
+import CollectionSaver from "@/app/components/wishlists/CollectionSaver";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -24,17 +27,26 @@ const initialDateRange = {
 };
 
 interface ListingClientProps {
-  reservations?: SafeReservation[];
+  reservations?: Pick<SafeReservation, "startDate" | "endDate">[];
   listing: SafeListing & {
     user: SafeUser;
+    amenities: { name: string }[];
   };
   currentUser?: SafeUser | null;
+  recommendedListings: SafeListing[];
+  reviews: { id: string; rating: number; comment: string; createdAt: string; user: { name: string | null; image: string | null } }[];
+  canReview: boolean;
+  wishlists: { id: string; name: string }[];
 }
 
 const ListingClient: React.FC<ListingClientProps> = ({
   listing,
   reservations = [],
   currentUser,
+  recommendedListings,
+  reviews,
+  canReview,
+  wishlists,
 }) => {
   const loginModal = useLoginModal();
   const router = useRouter();
@@ -55,8 +67,15 @@ const ListingClient: React.FC<ListingClientProps> = ({
   }, [reservations]);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(listing.price);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
+  const totalPrice = useMemo(() => {
+    if (!dateRange.startDate || !dateRange.endDate) return listing.price;
+    const dateCount = differenceInCalendarDays(
+      dateRange.endDate,
+      dateRange.startDate
+    );
+    return dateCount && listing.price ? dateCount * listing.price : listing.price;
+  }, [dateRange, listing.price]);
 
   const onCreateReservation = useCallback(() => {
     if (!currentUser) {
@@ -70,7 +89,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
         totalPrice,
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,
-        listingId: listing?.id,
+        listingId: listing.id,
       })
       .then(() => {
         toast.success("Listing reserved!");
@@ -83,22 +102,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
       .finally(() => {
         setIsLoading(false);
       });
-  }, [totalPrice, dateRange, listing?.id, router, currentUser, loginModal]);
-
-  useEffect(() => {
-    if (dateRange.startDate && dateRange.endDate) {
-      const dateCount = differenceInCalendarDays(
-        dateRange.endDate,
-        dateRange.startDate
-      );
-
-      if (dateCount && listing.price) {
-        setTotalPrice(dateCount * listing.price);
-      } else {
-        setTotalPrice(listing.price);
-      }
-    }
-  }, [dateRange, listing.price]);
+  }, [totalPrice, dateRange, listing.id, router, currentUser, loginModal]);
 
   const category = useMemo(() => {
     return categories.find((item) => item.label == listing.category);
@@ -123,6 +127,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
               guestCount={listing.guestCount}
               bathroomCount={listing.bathroomCount}
               locationValue={listing.locationValue}
+              amenities={listing.amenities}
             />
             <div className="order-first mb-10 md:order-last md:col-span-3">
               <ListingReservation
@@ -137,6 +142,16 @@ const ListingClient: React.FC<ListingClientProps> = ({
             </div>
           </div>
         </div>
+        <ListingReviews
+          listingId={listing.id}
+          reviews={reviews}
+          canReview={canReview}
+          currentUser={currentUser}
+        />
+        <div className="mt-6 max-w-md">
+          <CollectionSaver listingId={listing.id} collections={wishlists} signedIn={Boolean(currentUser)} />
+        </div>
+        <RecommendedListings listings={recommendedListings} currentUser={currentUser} />
       </div>
     </Container>
   );

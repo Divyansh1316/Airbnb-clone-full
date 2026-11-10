@@ -13,7 +13,19 @@ export default async function getListingById(params: IParams) {
         id: listingId,
       },
       include: {
-        user: true,
+        amenities: { select: { name: true } },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            emailVerified: true,
+            image: true,
+            createdAt: true,
+            updatedAt: true,
+            favoriteIds: true,
+          },
+        },
       },
     });
 
@@ -31,7 +43,7 @@ export default async function getListingById(params: IParams) {
         emailVerified: listing.user.emailVerified?.toISOString() || null,
       },
     };
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (error) {
+    throw new Error("Unable to load listing", { cause: error });
   }
 }

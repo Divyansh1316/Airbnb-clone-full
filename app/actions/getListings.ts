@@ -1,4 +1,5 @@
 import prisma from "@/app/libs/prismadb";
+import { amenityOptions, propertyTypes } from "@/app/libs/propertyOptions";
 
 export interface IListingParams {
   userId?: string;
@@ -9,6 +10,11 @@ export interface IListingParams {
   endDate?: string;
   locationValue?: string;
   category?: string;
+  limit?: number;
+  minPrice?: string | number;
+  maxPrice?: string | number;
+  propertyType?: string;
+  amenities?: string;
 }
 
 export default async function getListings(params: IListingParams) {
@@ -22,6 +28,11 @@ export default async function getListings(params: IListingParams) {
       endDate,
       locationValue,
       category,
+      limit,
+      minPrice,
+      maxPrice,
+      propertyType,
+      amenities,
     } = params;
 
     let query: any = {};
@@ -56,6 +67,22 @@ export default async function getListings(params: IListingParams) {
       query.locationValue = locationValue;
     }
 
+    const priceRange: { gte?: number; lte?: number } = {};
+    const minimum = Number(minPrice);
+    const maximum = Number(maxPrice);
+    if (minPrice !== undefined && Number.isSafeInteger(minimum) && minimum >= 0) priceRange.gte = minimum;
+    if (maxPrice !== undefined && Number.isSafeInteger(maximum) && maximum >= 0) priceRange.lte = maximum;
+    if (Object.keys(priceRange).length) query.price = priceRange;
+
+    if (propertyType && propertyTypes.includes(propertyType as (typeof propertyTypes)[number])) {
+      query.propertyType = propertyType;
+    }
+
+    const selectedAmenities = amenities
+      ? amenities.split(",").filter((name) => amenityOptions.includes(name as (typeof amenityOptions)[number]))
+      : [];
+    if (selectedAmenities.length) query.amenities = { some: { name: { in: selectedAmenities } } };
+
     if (startDate && endDate) {
       query.NOT = {
         reservations: {
@@ -80,6 +107,7 @@ export default async function getListings(params: IListingParams) {
       orderBy: {
         createdAt: "desc",
       },
+      ...(limit ? { take: limit } : {}),
     });
 
     const safeListings = listings.map((listing) => ({

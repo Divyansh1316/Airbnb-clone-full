@@ -36,7 +36,7 @@ export async function POST(request: Request, { params }: RouteContext) {
     },
   });
 
-  return NextResponse.json(user);
+  return NextResponse.json({ id: user.id, favoriteIds: user.favoriteIds });
 }
 
 export async function DELETE(request: Request, { params }: RouteContext) {
@@ -65,5 +65,5 @@ export async function DELETE(request: Request, { params }: RouteContext) {
     },
   });
 
-  return NextResponse.json(user);
+  return NextResponse.json({ id: user.id, favoriteIds: user.favoriteIds });
 }

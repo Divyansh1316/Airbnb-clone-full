@@ -25,6 +25,7 @@ interface ListingInfoProps {
       }
     | undefined;
   locationValue: string;
+  amenities?: { name: string }[];
 }
 const ListingInfo: React.FC<ListingInfoProps> = ({
   user,
@@ -34,6 +35,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   bathroomCount,
   category,
   locationValue,
+  amenities = [],
 }) => {
   const { getByValue } = useCountries();
 
@@ -52,6 +54,13 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           <div>{bathroomCount} bathrooms</div>
         </div>
       </div>
+      {amenities.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {amenities.map(({ name }) => (
+            <span key={name} className="rounded-full bg-neutral-100 px-3 py-1 text-sm dark:bg-[#24272e]">{name}</span>
+          ))}
+        </div>
+      )}
       <hr />
       {category && (
         <ListingCategory
@@ -63,7 +72,10 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
       <hr />
       <div className="text-lg font-light text-neutral-500">{description}</div>
       <hr />
-      <Map center={coordinates} />
+      <Map
+        center={coordinates}
+        containerClassName="h-[34vh] min-h-[260px] w-full rounded-lg md:h-[36vh]"
+      />
     </div>
   );
 };

@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/navbar/Navbar";
 import RegisterModal from "./components/modals/RegisterModal";
 import ToasterProvider from "./providers/ToasterProvider";
-import ClientOnly from "./components/ClientOnly";
 import LoginModal from "./components/modals/LoginModal";
 import getCurrentUser from "./actions/getCurrentUser";
 import RentModal from "./components/modals/RentModal";
 import SearchModal from "./components/modals/SearchModal";
-
-const font = Nunito({ subsets: ["latin"] });
+import ThemeProvider from "./providers/ThemeProvider";
+import Footer from "./components/Footer";
 
 export const metadata: Metadata = {
   title: "Airbnb",
@@ -24,17 +22,18 @@ export default async function RootLayout({
 }>) {
   const currentUser = await getCurrentUser();
   return (
-    <html lang="en">
-      <body className={font.className}>
-        {/* <ClientOnly> */}
-        <ToasterProvider />
-        <SearchModal />
-        <RentModal />
-        <LoginModal />
-        <RegisterModal />
-        <Navbar currentUser={currentUser} />
-        {/* </ClientOnly> */}
-        <div className="pb-20 pt-28">{children}</div>
+    <html lang="en" suppressHydrationWarning>
+      <body className="flex min-h-screen flex-col font-sans">
+        <ThemeProvider>
+          <ToasterProvider />
+          <SearchModal />
+          <RentModal />
+          <LoginModal />
+          <RegisterModal />
+          <Navbar currentUser={currentUser} />
+          <main className="flex flex-1 flex-col pb-8 pt-28">{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

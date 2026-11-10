@@ -1,8 +1,7 @@
 import getCurrentUser from "./actions/getCurrentUser";
 import getListings, { IListingParams } from "./actions/getListings";
-import Container from "./components/Container";
 import EmptyState from "./components/EmptyState";
-import ListingCard from "./components/listings/ListingCard";
+import ListingResults from "./components/listings/ListingResults";
 
 interface HomeProps {
   // ✅ In Next 15, searchParams is async
@@ -13,25 +12,17 @@ const Home = async ({ searchParams }: HomeProps) => {
   // ✅ Await it ONCE here
   const resolvedSearchParams = await searchParams;
 
-  const listings = await getListings(resolvedSearchParams);
-  const currentUser = await getCurrentUser();
+  const [listings, currentUser] = await Promise.all([
+    getListings({ ...resolvedSearchParams, limit: 24 }),
+    getCurrentUser(),
+  ]);
 
   if (listings.length === 0) {
     return <EmptyState showReset />;
   }
 
   return (
-    <Container>
-      <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
-        {listings.map((listing) => (
-          <ListingCard
-            currentUser={currentUser}
-            key={listing.id}
-            data={listing}
-          />
-        ))}
-      </div>
-    </Container>
+    <ListingResults listings={listings} currentUser={currentUser} />
   );
 };
 

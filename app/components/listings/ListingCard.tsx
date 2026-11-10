@@ -18,6 +18,7 @@ interface ListingCardProps {
   actionLabel?: string;
   actionId?: string;
   currentUser?: SafeUser | null;
+  isAboveFold?: boolean;
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -28,6 +29,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
   actionLabel,
   actionId = "",
   currentUser,
+  isAboveFold = false,
 }) => {
   const router = useRouter();
   const { getByValue } = useCountries();
@@ -68,6 +70,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
   return (
     <div
       onClick={() => router.push(`/listings/${data.id}`)}
+      onMouseEnter={() => router.prefetch(`/listings/${data.id}`)}
       className="col-span-1 cursor-pointer group"
     >
       <div className="flex flex-col w-full gap-2">
@@ -76,7 +79,10 @@ const ListingCard: React.FC<ListingCardProps> = ({
             fill
             alt="Listing"
             src={data.imageSrc}
-            className="object-cover h-full w-full group-hover:scale-110 transition"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 17vw"
+            loading={isAboveFold ? "eager" : "lazy"}
+            quality={75}
+            className="object-cover h-full w-full transition group-hover:scale-110"
           />
           <div className="absolute top-3 right-3">
             <HeartButton listingId={data.id} currentUser={currentUser} />

@@ -2,6 +2,152 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --select-surface: #ffffff;
+  --select-text: #262626;
+  --select-border: #d4d4d4;
+  --select-border-hover: #a3a3a3;
+  --select-placeholder: #737373;
+  --select-option-hover: #ffe4e6;
+  --select-option-selected: #f43f5e;
+  --select-option-selected-text: #ffffff;
+  --toast-surface: #ffffff;
+  --toast-text: #27272a;
+  --toast-border: #e4e4e7;
+}
+
+.dark {
+  --select-surface: #17191f;
+  --select-text: #f4f5f7;
+  --select-border: #353943;
+  --select-border-hover: #697180;
+  --select-placeholder: #a7adba;
+  --select-option-hover: #292d36;
+  --select-option-selected: #be3652;
+  --select-option-selected-text: #ffffff;
+  --toast-surface: #17191f;
+  --toast-text: #f4f5f7;
+  --toast-border: #353943;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-neutral-900;
+  }
+
+  .dark body {
+    @apply text-neutral-100;
+    background-color: #050608;
+  }
+
+  .dark .bg-white,
+  .dark .bg-neutral-50,
+  .dark .bg-neutral-100 {
+    background-color: #111318;
+  }
+
+  .dark .bg-neutral-800,
+  .dark .bg-neutral-900 {
+    background-color: #111318;
+  }
+
+  .dark .border-neutral-100,
+  .dark .border-neutral-200,
+  .dark .border-neutral-300 {
+    border-color: #2b2e36;
+  }
+
+  .dark .border-neutral-800 {
+    border-color: #2b2e36;
+  }
+
+  .dark .text-neutral-900,
+  .dark .text-neutral-800,
+  .dark .text-neutral-700 {
+    color: #f4f5f7;
+  }
+
+  .dark .text-neutral-600,
+  .dark .text-neutral-500 {
+    color: #b8bdc7;
+  }
+
+  .dark .text-black {
+    color: #f4f5f7;
+  }
+
+  .dark .border-black {
+    border-color: #353943;
+  }
+
+  .dark .hover\:bg-neutral-100:hover {
+    background-color: #22252c;
+  }
+
+  .dark hr {
+    border-color: #24272f;
+  }
+
+  .dark .shadow-sm {
+    box-shadow: 0 2px 8px rgb(0 0 0 / 30%), 0 0 0 1px rgb(255 255 255 / 3%);
+  }
+
+  .dark .shadow-md,
+  .dark .shadow-lg,
+  .dark .shadow-xl {
+    box-shadow: 0 12px 28px rgb(0 0 0 / 50%), 0 0 0 1px rgb(255 255 255 / 4%);
+  }
+
+  .dark .rdrCalendarWrapper {
+    color: #f4f5f7;
+    background: #111318;
+  }
+
+  .dark .rdrMonthAndYearPickers select {
+    color: #f4f5f7;
+    background-color: #111318;
+    background-image: none;
+    appearance: auto;
+  }
+
+  .dark .rdrMonthAndYearPickers select:hover {
+    background-color: #22252c;
+  }
+
+  .dark .rdrNextPrevButton {
+    background: #22252c;
+  }
+
+  .dark .rdrNextPrevButton:hover {
+    background: #343842;
+  }
+
+  .dark .rdrPprevButton i {
+    border-color: transparent #d1d5db transparent transparent;
+  }
+
+  .dark .rdrNextButton i {
+    border-color: transparent transparent transparent #d1d5db;
+  }
+
+  .dark .rdrWeekDay {
+    color: #aeb4bf;
+  }
+
+  .dark .rdrDayNumber span {
+    color: #e5e7eb;
+  }
+
+  .dark .rdrDayPassive .rdrDayNumber span,
+  .dark .rdrDayDisabled .rdrDayNumber span {
+    color: #717784;
+  }
+
+  .dark .rdrDayDisabled {
+    background-color: #191b20;
+  }
+}
+
 html,
 body,
 :root {
