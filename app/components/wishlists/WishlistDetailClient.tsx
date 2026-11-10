@@ -37,7 +37,7 @@ export default function WishlistDetailClient({
     <Container>
       <Heading title={wishlist.name} subtitle={`${listings.length} saved ${listings.length === 1 ? "stay" : "stays"}`} />
       {listings.length ? (
-        <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
           {listings.map((listing) => (
             <ListingCard key={listing.id} data={listing} currentUser={currentUser} onAction={removeListing} actionId={listing.id} actionLabel={removingId === listing.id ? "Removing…" : "Remove from collection"} disabled={removingId === listing.id} />
           ))}
