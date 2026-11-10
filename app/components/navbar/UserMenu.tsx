@@ -11,6 +11,7 @@ import { SafeUser } from "@/app/types";
 import useRentModal from "@/app/hooks/useRentModal";
 import { useRouter } from "next/navigation";
 import ThemeSelector from "@/app/components/ThemeSelector";
+import useSearchModal from "@/app/hooks/useSearchModal";
 
 interface UserMenuProps {
   currentUser?: SafeUser | null;
@@ -21,6 +22,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const rentModal = useRentModal();
+  const searchModal = useSearchModal();
 
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -69,7 +71,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
           aria-haspopup="menu"
           aria-expanded={isOpen}
           aria-label="Open profile menu"
-          className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
+          className="flex cursor-pointer flex-row items-center gap-3 rounded-full border-[1px] border-neutral-200 p-3 transition hover:shadow-md sm:p-4 md:px-2 md:py-1"
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
@@ -80,6 +82,15 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
       {isOpen && (
         <div className="absolute right-0 top-12 z-50 w-64 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-neutral-200 bg-white text-sm shadow-xl dark:border-[#2b2e36] dark:bg-[#111318]">
           <div className="flex flex-col cursor-pointer">
+            <div className="md:hidden">
+              <MenuItem
+                onClick={() => {
+                  setIsOpen(false);
+                  searchModal.onOpen();
+                }}
+                label="Search stays"
+              />
+            </div>
             {currentUser ? (
               <>
                 <MenuItem
@@ -135,6 +146,13 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
               </>
             ) : (
               <>
+                <MenuItem
+                  onClick={() => {
+                    setIsOpen(false);
+                    onRent();
+                  }}
+                  label="Airbnb your home"
+                />
                 <MenuItem
                   onClick={() => {
                     setIsOpen(false);
