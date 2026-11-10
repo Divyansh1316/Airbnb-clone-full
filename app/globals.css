@@ -170,6 +170,15 @@ body,
   width: 100% !important;
 }
 
+.navbar-category-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.navbar-category-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 /* Keep the loading animation in the global stylesheet so it is active on the
    first server-rendered frame as well as during client-side navigation. */
 .airbnb-puff-loader {

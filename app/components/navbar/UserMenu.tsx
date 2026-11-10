@@ -69,7 +69,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
           aria-haspopup="menu"
           aria-expanded={isOpen}
           aria-label="Open profile menu"
-          className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
+          className="flex cursor-pointer flex-row items-center gap-3 rounded-full border-[1px] border-neutral-200 p-3 transition hover:shadow-md sm:p-4 md:px-2 md:py-1"
         >
           <AiOutlineMenu />
           <div className="hidden md:block">

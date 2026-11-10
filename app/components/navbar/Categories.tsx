@@ -109,7 +109,7 @@ const Categories = () => {
   }
   return (
     <Container>
-      <div className="pt-4 flex flex-row items-center justify-between overflow-x-auto">
+      <div className="navbar-category-scroll flex snap-x snap-proximity flex-row items-center justify-start gap-4 overflow-x-auto overscroll-x-contain pt-3 sm:gap-6 sm:pt-4 md:justify-between md:gap-0">
         {categories.map((item) => (
           <CategoryBox
             key={item.label}

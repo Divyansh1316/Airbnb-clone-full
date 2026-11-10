@@ -52,16 +52,18 @@ const Search = () => {
   return (
     <div
       onClick={searchModal.onOpen}
-      className="w-full cursor-pointer rounded-full border border-neutral-300 py-2 shadow-sm transition hover:shadow-md dark:border-[#747985] md:w-auto"
+      className="min-w-0 flex-1 cursor-pointer rounded-full border border-neutral-300 py-2 shadow-sm transition hover:shadow-md dark:border-[#747985] md:w-auto md:flex-none"
     >
-      <div className="flex flex-row items-center justify-center">
-        <div className="text-sm font-semibold px-6">{locationLabel}</div>
-        <div className="hidden flex-1 border-x-[1px] border-neutral-300 px-6 text-center text-sm font-semibold dark:border-[#747985] sm:block">
+      <div className="flex min-w-0 flex-row items-center">
+        <div className="min-w-0 flex-1 truncate px-4 text-left text-sm font-semibold sm:flex-none sm:px-6 sm:text-center">
+          {locationLabel}
+        </div>
+        <div className="hidden min-w-0 flex-1 border-x-[1px] border-neutral-300 px-6 text-center text-sm font-semibold dark:border-[#747985] sm:block">
           {durationLabel}
         </div>
-        <div className="flex flex-row items-center gap-3 border-l-[1px] border-neutral-300 pl-6 pr-2 text-sm text-gray-600 dark:border-[#747985] dark:text-neutral-200 sm:border-l-0">
-          <div className="hidden sm:block">{guestLabel}</div>
-          <div className="p-2 bg-rose-500 rounded-full text-white">
+        <div className="flex shrink-0 flex-row items-center gap-3 border-l-[1px] border-neutral-300 pl-3 pr-2 text-sm text-gray-600 dark:border-[#747985] dark:text-neutral-200 sm:border-l-0 sm:pl-6">
+          <div className="hidden whitespace-nowrap sm:block">{guestLabel}</div>
+          <div className="shrink-0 rounded-full bg-rose-500 p-2 text-white">
             <BiSearch size={18} />
           </div>
         </div>
