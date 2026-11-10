@@ -169,3 +169,38 @@ body,
   font-size: 16px !important;
   width: 100% !important;
 }
+
+/* Keep the loading animation in the global stylesheet so it is active on the
+   first server-rendered frame as well as during client-side navigation. */
+.airbnb-puff-loader {
+  position: relative;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  color: #ff385c;
+}
+
+.airbnb-puff-loader__ring {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  border: 4px solid currentColor;
+  border-radius: 50%;
+  animation:
+    airbnb-puff-scale 2s cubic-bezier(0.165, 0.84, 0.44, 1) infinite,
+    airbnb-puff-fade 2s cubic-bezier(0.3, 0.61, 0.355, 1) infinite;
+}
+
+.airbnb-puff-loader__ring--delayed {
+  animation-delay: -1s;
+}
+
+@keyframes airbnb-puff-scale {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+@keyframes airbnb-puff-fade {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
