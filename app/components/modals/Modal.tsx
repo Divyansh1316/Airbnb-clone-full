@@ -32,7 +32,8 @@ const Modal: React.FC<ModalProps> = ({
   const [showModal, setShowModal] = useState(isOpen);
 
   useEffect(() => {
-    setShowModal(isOpen);
+    const frame = requestAnimationFrame(() => setShowModal(isOpen));
+    return () => cancelAnimationFrame(frame);
   }, [isOpen]);
 
   const handleClose = useCallback(() => {
@@ -68,19 +69,19 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <>
-      <div className="justify-center items-center flex overflow-x-hidden overflow-y-hidden fixed inset-0 z-50 outline-none focus:outline-none bg-neutral-800/70 backdrop-blur-lg">
-        <div className="relative w-full h-full mx-auto my-6 md:w-4/6 lg:w-3/6 xl:w-2/5 lg:h-auto md:h-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-neutral-800/70 p-2 backdrop-blur-lg md:p-4">
+        <div className="relative my-auto flex max-h-[calc(100dvh-1rem)] w-full flex-col md:max-h-[calc(100dvh-2rem)] md:w-4/6 lg:w-3/6 xl:w-2/5">
           {/* Content */}
           <div
             className={`
-            translate duration-300 h-full
+            flex min-h-0 flex-col duration-300
             ${showModal ? "translate-y-0" : "translate-y-full"}
             ${showModal ? "opacity-100" : "opacity-0"}
             `}
           >
-            <div className="translate h-full lg:h-auto md:h-auto border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+            <div className="flex min-h-0 max-h-[calc(100dvh-1rem)] w-full flex-col overflow-hidden rounded-lg border-0 bg-white shadow-lg outline-none focus:outline-none dark:bg-[#111318] md:max-h-[calc(100dvh-2rem)]">
               {/* Header */}
-              <div className="flex items-center p-4 rounded-t justify-center relative border-b-[1px]">
+              <div className="relative flex shrink-0 items-center justify-center rounded-t border-b border-neutral-200 p-4 dark:border-[#24272f]">
                 <button
                   onClick={handleClose}
                   className="p-1 border-0 hover:opacity-70 transition absolute left-9"
@@ -89,13 +90,13 @@ const Modal: React.FC<ModalProps> = ({
                 </button>
                 <div className="text-lg font-semibold">{title}</div>
               </div>
-              <div>
+              <div className="min-h-0 flex-1 overflow-y-auto">
                 {/* Body */}
-                <div className="relative p-6 flex-auto">{body}</div>
+                <div className="relative p-6">{body}</div>
               </div>
-              <div>
+              <div className="shrink-0 border-t border-neutral-200 bg-white dark:border-[#24272f] dark:bg-[#111318]">
                 {/* Footer */}
-                <div className="flex flex-col gap-2 p-6 -mt-1">
+                <div className="flex flex-col gap-2 p-4 md:p-6">
                   <div className="flex flex-row items-center gap-4 w-full">
                     {secondaryAction && secondaryActionLabel && (
                       <Button

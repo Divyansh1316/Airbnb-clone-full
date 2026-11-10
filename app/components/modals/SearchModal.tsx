@@ -13,6 +13,8 @@ import Heading from "../Heading";
 import Calendar from "../inputs/Calendar";
 import Counter from "../inputs/Counter";
 
+const Map = dynamic(() => import("../Map"), { ssr: false });
+
 enum STEPS {
   LOCATION = 0,
   DATE = 1,
@@ -35,14 +37,6 @@ const SearchModal = () => {
     key: "selection",
   });
 
-  const Map = useMemo(
-    () =>
-      dynamic(() => import("../Map"), {
-        ssr: false,
-      }),
-    [location]
-  );
-
   const onBack = useCallback(() => {
     setStep((value) => value - 1);
   }, []);
@@ -61,6 +55,11 @@ const SearchModal = () => {
     if (params) {
       currentQuery = qs.parse(params.toString());
     }
+
+    delete (currentQuery as Record<string, unknown>).propertyType;
+    delete (currentQuery as Record<string, unknown>).minPrice;
+    delete (currentQuery as Record<string, unknown>).maxPrice;
+    delete (currentQuery as Record<string, unknown>).amenities;
 
     const updatedQuery: any = {
       ...currentQuery,
@@ -129,7 +128,7 @@ const SearchModal = () => {
         value={location}
         onChange={(value) => setLocation(value as CountrySelectValue)}
       />
-      <hr />
+      <hr className="border-neutral-200 dark:border-[#24272f]" />
       <Map center={location?.latlng} />
     </div>
   );
@@ -151,7 +150,7 @@ const SearchModal = () => {
 
   if (step == STEPS.INFO) {
     bodyContent = (
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-6 pr-1">
         <Heading title="More information" subtitle="Find your perfect place!" />
         <Counter
           title="Guests"

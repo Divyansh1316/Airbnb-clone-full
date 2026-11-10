@@ -18,7 +18,7 @@ const EmptyState: React.FC<EmptyState> = ({
   const router = useRouter();
 
   return (
-    <div className="h-[60vh] flex flex-col gap-2 justify-center items-center">
+    <div className="-mb-8 flex flex-1 flex-col items-center justify-center gap-2">
       <Heading center title={title} subtitle={subtitle} />
       <div className="w-48 mt-4">
         {showReset && (

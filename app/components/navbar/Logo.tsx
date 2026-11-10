@@ -14,6 +14,7 @@ const Logo = () => {
       height="100"
       width="100"
       src="/images/logo.png"
+      style={{ width: 100, height: "auto" }}
     />
   );
 };

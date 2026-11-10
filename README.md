@@ -1,166 +1,138 @@
-# 🏡 Airbnb Clone - Full Stack Property Booking Platform
+# Airbnb Clone
 
-A modern full-stack property listing and reservation platform inspired by Airbnb. Users can browse listings, filter properties, create reservations, and manage favorite listings with secure authentication.
+A full-stack property discovery and booking app built with Next.js, React, TypeScript, Prisma, and MongoDB. Guests can browse and reserve stays, hosts can publish listings, and signed-in users can manage favorites, reviews, and wishlist collections.
 
----
+For the architecture, data model, API flows, and implementation details, see the [Technical Overview](docs/TECHNICAL_OVERVIEW.md).
 
-## 🚀 Live Demo
+## Features
 
-**Live Website:** https://video-rent-example-tawny.vercel.app/
+- Browse stays by category, location, dates, and guest/room/bathroom counts.
+- Switch between a listing grid and a country-level map view.
+- View listing details, availability, host information, amenities, and up to four similar stays.
+- Create reservations and manage guest trips or host reservations.
+- Save listings to favorites and named wishlist collections.
+- Submit or update a review after a completed stay.
+- Sign in with Google, GitHub, or email and password.
+- Select light, dark, or device-based appearance.
+- Create listings with Cloudinary-hosted images.
+- Responsive layout and optimized property images.
 
----
+## Tech Stack
 
-## ✨ Features
+| Area | Technology |
+| --- | --- |
+| Web framework | Next.js 16 App Router, plus a Pages API route for NextAuth |
+| UI | React 19, TypeScript, Tailwind CSS 3 |
+| Data | MongoDB with Prisma 5 |
+| Authentication | NextAuth 4, Google/GitHub OAuth, credentials, bcrypt |
+| Maps | Leaflet and React Leaflet, OpenStreetMap tiles |
+| Images | Cloudinary upload widget and Next.js Image optimization |
+| UI utilities | React Hook Form, Zustand, Axios, React Hot Toast, next-themes |
 
-### 👤 User Features
+Node.js 20.9 or newer is required. Exact dependency versions are recorded in `package-lock.json`.
 
-- Secure authentication using:
-  - Google OAuth
-  - GitHub OAuth
-  - Email & Password Login
+## Run Locally
 
-- Browse available property listings
-- Advanced filtering by:
-  - Category
-  - Location
-  - Guests
-  - Rooms
-  - Bathrooms
+1. Install dependencies:
 
-- Search properties based on travel preferences
-- Add listings to favorites
-- View detailed property information
-- Make reservations for listed properties
-- Cancel reservations
-- Responsive UI optimized for all devices
+   ```bash
+   npm install
+   ```
 
----
+2. Create `.env.local` with the values for your **development** database and OAuth apps. Required variables:
 
-### 🏠 Host Features
+   ```text
+   DATABASE_URL=
+   NEXTAUTH_URL=http://localhost:3000
+   NEXTAUTH_SECRET=
+   GOOGLE_CLIENT_ID=
+   GOOGLE_CLIENT_SECRET=
+   GITHUB_ID=
+   GITHUB_SECRET=
+   ```
 
-- Create new property listings
-- Upload property images
-- Add listing details:
-  - Title
-  - Description
-  - Location
-  - Guest capacity
-  - Room count
-  - Bathroom count
-  - Price
+   Keep `.env` and `.env.local` private and out of version control. Do not point local development at a production database.
 
-- Manage listed properties
-- View reservations for listed properties
+   Generate a local `NEXTAUTH_SECRET` with:
 
----
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+   ```
 
-## 🏗️ Tech Stack
+3. Sync Prisma with the development database when setting up a fresh database or after changing `prisma/schema.prisma`:
 
-### Frontend
+   ```bash
+   npx prisma db push
+   npx prisma generate
+   ```
 
-- Next.js 15
-- React.js
-- TypeScript
-- Tailwind CSS
+   `db push` changes the database schema. Run it only with the intended development `DATABASE_URL`.
 
-### Backend
+4. Start the app:
 
-- Next.js API Routes
-- Prisma ORM
-- MongoDB
+   ```bash
+   npm run dev
+   ```
 
-### Authentication
+   Open [http://localhost:3000](http://localhost:3000).
 
-- NextAuth.js
-- Google OAuth
-- GitHub OAuth
-- Credentials Authentication
+### Local OAuth callbacks
 
-### Additional Tools
+- Google: `http://localhost:3000/api/auth/callback/google`
+- GitHub: `http://localhost:3000/api/auth/callback/github`
 
-- React Hook Form
-- Zustand
-- Axios
-- React Hot Toast
-- Leaflet Maps
+Add the local callback to the Google OAuth client. GitHub OAuth Apps allow one callback URL, so use a separate OAuth App for local development. Restart the dev server after changing environment variables. If a session reports a JWT decryption error after changing `NEXTAUTH_SECRET`, clear localhost cookies and sign in again.
 
----
+### Production build
 
-## 📂 Project Structure
+```bash
+npm run build
+npm run start
+```
+
+The build script generates the Prisma client before building Next.js. Set production environment variables and OAuth callback URLs in the hosting platform; do not use production values for a local preview.
+
+### Useful commands
+
+```bash
+npm run lint       # ESLint
+npx prisma generate
+npx prisma db push # Apply Prisma schema to the configured MongoDB database
+```
+
+## Project Layout
 
 ```text
-Airbnb-clone-full/
-│
-├── app/                # Next.js App Router pages
-├── prisma/             # Prisma schema and database config
-├── public/             # Static assets
-├── app/components/     # Reusable UI components
-├── app/actions/        # Server actions / data fetching
-└── README.md
+app/
+  actions/       Server-side data access and session helpers
+  api/           App Router API handlers
+  components/    Shared UI, listing views, modals, and forms
+  hooks/         Client state hooks
+  libs/          Prisma client, property options, and rate limiting
+  providers/     Theme and toast providers
+  listings/      Listing detail route
+  wishlists/     Wishlist collection routes
+pages/api/
+  auth/          NextAuth handler (Pages Router API endpoint)
+prisma/
+  schema.prisma  MongoDB data model
+docs/
+  TECHNICAL_OVERVIEW.md
 ```
 
----
+## Technical Notes
 
-## ⚙️ Installation
+- The Prisma schema includes users, OAuth accounts, listings, reservations, listing amenities, reviews, and wishlist collections.
+- Reservation dates and price are checked on the server. The server calculates the total using the listing price and selected nights.
+- Review submissions require a completed reservation. A unique user/listing pair allows one review per guest per listing, which can be updated.
+- Wishlist handlers verify collection ownership before changes.
+- The registration limiter is in-memory and per process. Deployments with multiple app instances should use a shared rate-limit store.
+- The app uses `proxy.ts` to protect trips, reservations, properties, and favorites pages. API handlers also perform their own authentication and validation where required.
 
-### Clone the repository
+## Documentation
 
-```bash
-git clone https://github.com/your-username/airbnb-clone-full.git
-cd airbnb-clone-full
-```
+- [Technical Overview](docs/TECHNICAL_OVERVIEW.md): architecture, request flows, data model, endpoints, and implementation notes.
 
----
+## Author
 
-### Install dependencies
-
-```bash
-npm install
-```
-
-## ▶️ Run the Project
-
-Start development server:
-
-```bash
-npm run dev
-```
-
-Application runs on:
-
-```text
-http://localhost:3000
-```
-
----
-
-## 🔮 Future Improvements
-
-- Payment integration
-- Property reviews and ratings
-- Chat between hosts and guests
-- Wishlist enhancements
-- Availability calendar
-- Booking notifications
-- Admin dashboard
-
----
-
-## 📚 What I Learned
-
-- Building scalable full-stack applications using Next.js
-- Managing authentication with NextAuth.js
-- Implementing OAuth providers (Google & GitHub)
-- Database modeling using Prisma + MongoDB
-- Building responsive UIs with Tailwind CSS
-- Managing global state efficiently
-- Handling secure environment variables and deployment workflows
-- Deploying production-ready applications with Vercel
-
----
-
-## 👨‍💻 Author
-
-**Divyansh Dhaundiyal**
-
-GitHub: https://github.com/Divyansh1316
+Divyansh Dhaundiyal · [GitHub](https://github.com/Divyansh1316)

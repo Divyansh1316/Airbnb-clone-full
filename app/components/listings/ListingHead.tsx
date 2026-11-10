@@ -37,6 +37,9 @@ const ListingHead: React.FC<ListingHeadProps> = ({
           alt="Image"
           src={imageSrc}
           fill
+          sizes="(max-width: 768px) 100vw, 1024px"
+          loading="eager"
+          fetchPriority="high"
           className="object-cover w-full"
         />
         <div className="absolute top-5 right-5">
