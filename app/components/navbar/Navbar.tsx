@@ -18,7 +18,9 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
         <Container>
           <div className="flex flex-grow items-center justify-between gap-2 sm:gap-3 md:gap-0">
             <Logo />
-            <Search />
+            <div className="hidden md:block">
+              <Search />
+            </div>
             <UserMenu currentUser={currentUser} />
           </div>
         </Container>
