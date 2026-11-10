@@ -1,11 +1,11 @@
-"use client";
-
-import { PuffLoader } from "react-spinners";
-
 const Loader = () => {
   return (
-    <div className="h-[70vh] flex flex-col justify-center items-center">
-      <PuffLoader size={100} color="red" />
+    <div className="flex h-[70vh] flex-col items-center justify-center" role="status" aria-label="Loading">
+      <span className="airbnb-puff-loader" aria-hidden="true">
+        <span className="airbnb-puff-loader__ring airbnb-puff-loader__ring--delayed" />
+        <span className="airbnb-puff-loader__ring" />
+      </span>
+      <span className="sr-only">Loading</span>
     </div>
   );
 };
