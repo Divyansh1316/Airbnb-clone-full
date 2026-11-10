@@ -29,7 +29,7 @@ For the architecture, data model, API flows, and implementation details, see the
 | Images | Cloudinary upload widget and Next.js Image optimization |
 | UI utilities | React Hook Form, Zustand, Axios, React Hot Toast, next-themes |
 
-Node.js 20.9 or newer is required. Exact dependency versions are recorded in `package-lock.json`.
+Node.js 24.x is the project runtime. The version is pinned in `package.json` and `.nvmrc`; `package-lock.json` records the exact dependency versions. Use Node 24 locally and select **24.x** in Vercel under **Project Settings → Build and Deployment → Node.js Version**. Redeploy after changing the Vercel setting.
 
 ## Run Locally
 
@@ -39,7 +39,7 @@ Node.js 20.9 or newer is required. Exact dependency versions are recorded in `pa
    npm install
    ```
 
-2. Create `.env.local` with the values for your **development** database and OAuth apps. Required variables:
+2. Add the values for your **development** database and OAuth apps to `.env.local` (or your existing local `.env`). Required variables:
 
    ```text
    DATABASE_URL=
@@ -51,7 +51,7 @@ Node.js 20.9 or newer is required. Exact dependency versions are recorded in `pa
    GITHUB_SECRET=
    ```
 
-   Keep `.env` and `.env.local` private and out of version control. Do not point local development at a production database.
+   Keep `.env` and `.env.local` private and out of version control. Do not point local development at a production database. Next.js loads local environment files automatically; do not commit either file.
 
    Generate a local `NEXTAUTH_SECRET` with:
 
@@ -92,6 +92,8 @@ npm run start
 
 The build script generates the Prisma client before building Next.js. Set production environment variables and OAuth callback URLs in the hosting platform; do not use production values for a local preview.
 
+For Vercel, configure Node.js **24.x** in the project settings and keep the production branch set to `master`. Pull requests receive preview deployments; merging a passing pull request into `master` triggers a production deployment.
+
 ### Useful commands
 
 ```bash
@@ -128,6 +130,7 @@ docs/
 - Wishlist handlers verify collection ownership before changes.
 - The registration limiter is in-memory and per process. Deployments with multiple app instances should use a shared rate-limit store.
 - The app uses `proxy.ts` to protect trips, reservations, properties, and favorites pages. API handlers also perform their own authentication and validation where required.
+- The shared route loader is rendered by `app/loading.tsx`. Its two-ring expanding/fading animation is defined in `app/globals.css`, so it is present on initial page refresh as well as client-side navigation.
 
 ## Documentation
 
